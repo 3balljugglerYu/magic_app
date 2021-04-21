@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
 class CardAppearance extends StatefulWidget {
+  CardAppearance({@required this.resultSecondsLater});
+
+  final int resultSecondsLater;
+
   @override
   CardAppearanceState createState() => CardAppearanceState();
 }
@@ -12,8 +16,12 @@ class CardAppearanceState extends State<CardAppearance> {
   int fadeInSeconds = 1;
   String imageCard = 'images/heart_nine.jpg';
 
-  Future<void> secondsLater() async {
-    Duration secondsLater = Duration(seconds: 3);
+  int resultSecondsLater = 0; //ここが問題だとは思うのですが、settingPageで渡した値をstatefulメソッドに入れる方法がわかりません・・・・。
+
+  Future<void> applyCardChange(resultSecondsLater) async {
+    // int resultSecondsLater;
+
+    Duration secondsLater = Duration(seconds: resultSecondsLater);
     Vibration.vibrate(duration: 100);
     print('onTaped');
     await Future.delayed(secondsLater, () {});
@@ -32,8 +40,6 @@ class CardAppearanceState extends State<CardAppearance> {
       }
     });
   }
-
-  void fadeInType() {}
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +67,8 @@ class CardAppearanceState extends State<CardAppearance> {
                   ),
                 ),
                 onTap: () {
-                  secondsLater();
+                  applyCardChange(resultSecondsLater);
+                  print('$resultSecondsLater seconds later');
                 },
               ),
             ),
@@ -69,8 +76,5 @@ class CardAppearanceState extends State<CardAppearance> {
         ),
       ),
     );
-    // }
-
-    // );
   }
 }

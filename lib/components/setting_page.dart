@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'bottom_button.dart';
 import 'constants.dart';
-import 'resable_card.dart';
-
-enum Gender {
-  male,
-  female,
-}
+import 'reusable_card.dart';
+import 'package:magic_app/screens/card_appearance.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -14,7 +10,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPage extends State<SettingPage> {
-  Gender selectedGender;
   int secondsLater = 3;
 
   @override
@@ -69,6 +64,7 @@ class _SettingPage extends State<SettingPage> {
                       onChanged: (double newValue) {
                         setState(() {
                           secondsLater = newValue.round();
+                          // print(secondsLater);
                         });
                       },
                     ),
@@ -79,28 +75,25 @@ class _SettingPage extends State<SettingPage> {
           ),
           SizedBox(
             height: 500.0,
-          )
+          ),
+          BottomButton(
+            buttonTitle: 'Let\'s Play !!',
+            onTap: () {
+              print(secondsLater);
+              // int setSecondsLater = secondsLater;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CardAppearance(
+                    resultSecondsLater: secondsLater,
+                  ),
+                ),
+              );
+              // print(secondsLater);
+            },
+          ),
         ],
       ),
     );
-    // BottomButton(
-    //   buttonTitle: 'CALCULATE',
-    //   onTap: () {
-    //     CalculatorBrain calc = CalculatorBrain(height: height, weight: weight);
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => ResultsPage(
-    //           bmiResult: calc.calculateBMI(),
-    //           resultText: calc.getResult(),
-    //           interpretation: calc.getInterpretation(),
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // )
-    //     ],
-    //   ),
-    // );
   }
 }
