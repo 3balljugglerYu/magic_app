@@ -7,18 +7,33 @@ class CardAppearance extends StatefulWidget {
 }
 
 class CardAppearanceState extends State<CardAppearance> {
-  double opacityLevel = 0.0;
+  double _opacityLevel = 0.0;
+  int count = 1;
+  int fadeInSeconds = 1;
+  String imageCard = 'images/heart_nine.jpg';
 
-  Future<double> secondsLater() async {
-    Duration threeSeconds = Duration(seconds: 3);
+  Future<void> secondsLater() async {
+    Duration secondsLater = Duration(seconds: 3);
     Vibration.vibrate(duration: 100);
     print('onTaped');
-    await Future.delayed(threeSeconds, () {
-      opacityLevel = opacityLevel == 0.0 ? 1.0 : 0.0;
-      print('3 seconds later');
+    await Future.delayed(secondsLater, () {});
+    setState(() {
+      print('appear!!');
+      if (count == 1) {
+        _opacityLevel = _opacityLevel == 0.0 ? 1.0 : 0.0;
+        fadeInSeconds = 1;
+        count++;
+        print(count);
+      } else if (count == 2) {
+        fadeInSeconds = 0;
+        imageCard = 'images/spade_ace.jpg';
+        count--;
+        print(count);
+      }
     });
-    return opacityLevel;
   }
+
+  void fadeInType() {}
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +52,16 @@ class CardAppearanceState extends State<CardAppearance> {
                 behavior: HitTestBehavior.opaque,
                 child: Center(
                   child: AnimatedOpacity(
-                    opacity: opacityLevel,
-                    duration: Duration(seconds: 1),
+                    opacity: _opacityLevel,
+                    duration: Duration(seconds: fadeInSeconds),
                     child: Image.asset(
-                      'images/9ofHears.jpg',
+                      imageCard,
                       width: 400.0,
                     ),
                   ),
                 ),
                 onTap: () {
-                  setState(() {
-                    secondsLater();
-                  });
+                  secondsLater();
                 },
               ),
             ),
