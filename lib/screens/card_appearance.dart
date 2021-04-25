@@ -2,46 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
 class CardAppearance extends StatefulWidget {
-  CardAppearance({@required this.resultSecondsLater});
+  CardAppearance(
+      {@required this.resultSecondsLater, @required this.resultImageDisplay});
 
   final int resultSecondsLater;
+  final bool resultImageDisplay;
 
   @override
   CardAppearanceState createState() => CardAppearanceState();
 }
 
 class CardAppearanceState extends State<CardAppearance> {
-  double _opacityLevel = 0.0;
-  int count = 1;
+  bool _opacityLevel = false;
+  int count = 0;
   int fadeInSeconds = 1;
   String imageCard = 'images/heart_nine.jpg';
 
-  int resultSecondsLater = 0; //ここが問題だとは思うのですが、settingPageで渡した値をstatefulメソッドに入れる方法がわかりません・・・・。
-
   Future<void> applyCardChange(resultSecondsLater) async {
-    // int resultSecondsLater;
-
     Duration secondsLater = Duration(seconds: resultSecondsLater);
     Vibration.vibrate(duration: 100);
-    print('onTaped');
+    // print('onTaped');
     await Future.delayed(secondsLater, () {});
     setState(() {
       print('appear!!');
-      if (count == 1) {
-        _opacityLevel = _opacityLevel == 0.0 ? 1.0 : 0.0;
+
+      if (count == 0) {
+        _opacityLevel =! _opacityLevel;
         fadeInSeconds = 1;
+        imageCard = 'images/heart_nine.jpg';
         count++;
-        print(count);
-      } else if (count == 2) {
-        fadeInSeconds = 0;
+        // print(count);
+      } else if (count == 1) {
+        fadeInSeconds = 3;
+        _opacityLevel =! _opacityLevel;
         imageCard = 'images/spade_ace.jpg';
-        count--;
-        print(count);
+        count++;
+        // print(count);
+      } else if (count == 2) {
+        _opacityLevel =! _opacityLevel;
+        fadeInSeconds = 3;
+        // imageCard = 'images/spade_ace.jpg';
+        count = count - 2;
+        // print(count);
       }
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    _opacityLevel = widget.resultImageDisplay;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -58,7 +70,7 @@ class CardAppearanceState extends State<CardAppearance> {
                 behavior: HitTestBehavior.opaque,
                 child: Center(
                   child: AnimatedOpacity(
-                    opacity: _opacityLevel,
+                    opacity: _opacityLevel ? 1.0 : 0.0,
                     duration: Duration(seconds: fadeInSeconds),
                     child: Image.asset(
                       imageCard,
@@ -67,8 +79,8 @@ class CardAppearanceState extends State<CardAppearance> {
                   ),
                 ),
                 onTap: () {
-                  applyCardChange(resultSecondsLater);
-                  print('$resultSecondsLater seconds later');
+                  applyCardChange(widget.resultSecondsLater);
+                  print('${widget.resultSecondsLater} seconds later');
                 },
               ),
             ),
