@@ -4,6 +4,7 @@ import 'screens/coin_appearance.dart';
 import 'screens/card_appearance.dart';
 import 'screens/practice_page.dart';
 import 'components/setting_page.dart';
+import 'screens/image_select.dart';
 
 void main() {
   runApp(MyApp());
@@ -133,48 +134,23 @@ class TopPage extends StatelessWidget {
             // ),
             Expanded(
               flex: 3,
-              child: Card(
-                shadowColor: Color.fromRGBO(0, 0, 0, 1.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                elevation: 10.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: (() async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingPage(),
-                      ),
-                    );
-                    print(result);
-                  }),
-                  child: Column(
-                    children: [
-                      const ListTile(
-                        leading: Icon(Icons.album),
-                        title: Text(
-                          'プログラミング練習用',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        subtitle: Text(
-                          'セッティングページで設定した秒数を、画像を表示するタイミングに設定。',
-                          style: TextStyle(fontSize: 13.0),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text('この現象へ移動'),
-                          SizedBox(width: 8.0),
-                          Text('Go'),
-                          Icon(Icons.arrow_right),
-                          SizedBox(width: 20.0),
-                        ],
-                      )
-                    ],
-                  ),
+              child: TopPageCard(
+                icon: Icons.album,
+                text: 'プログラミング練習用',
+                subText: 'セッティングページで設定した秒数を、画像を表示するタイミングに設定。',
+                transitionDestination: MaterialPageRoute(
+                  builder: (context) => SettingPage(),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: TopPageCard(
+                icon: Icons.album,
+                text: '画像取り込み練習',
+                subText: '画像ライブラリから、画像を選択＆表示。',
+                transitionDestination: MaterialPageRoute(
+                                  builder: (context) => ImageSelect(),
                 ),
               ),
             ),
@@ -188,6 +164,62 @@ class TopPage extends StatelessWidget {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TopPageCard extends StatelessWidget {
+  const TopPageCard({this.icon, this.text, this.subText, this.transitionDestination});
+
+  final IconData icon;
+  final String text;
+  final String subText;
+  final Route transitionDestination;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0)),
+      elevation: 10.0,
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: (() async {
+          final result = await Navigator.push(
+            context,
+            transitionDestination,
+          );
+          print(result);
+        }),
+        child: Column(
+          children: [
+            SizedBox(height: 10.0),
+            ListTile(
+              leading: Icon(icon),
+              title: Text(
+                text,
+                style: TextStyle(fontSize: 18.0),
+              ),
+              subtitle: Text(
+                subText,
+                style: TextStyle(fontSize: 13.0),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('この現象へ移動'),
+                SizedBox(width: 8.0),
+                Text('Go'),
+                Icon(Icons.arrow_right),
+                SizedBox(width: 20.0),
+              ],
+            )
           ],
         ),
       ),

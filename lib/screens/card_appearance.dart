@@ -25,25 +25,45 @@ class CardAppearanceState extends State<CardAppearance> {
     await Future.delayed(secondsLater, () {});
     setState(() {
       print('appear!!');
+      if (widget.resultImageDisplay == true){
+        if(count == 0){
+          _opacityLevel =! _opacityLevel;
+          fadeInSeconds = 1;
+          // imageCard = 'images/heart_nine.jpg';
+          count++;
+        } else if (count == 1){
+          fadeInSeconds = 3;
+          _opacityLevel =! _opacityLevel;
+          imageCard = 'images/spade_ace.jpg';
+          count--;
+        } else if (count == 2){
+          _opacityLevel =! _opacityLevel;
+          fadeInSeconds = 3;
+          count = count - 2;
+        }
+      }
 
-      if (count == 0) {
-        _opacityLevel =! _opacityLevel;
-        fadeInSeconds = 1;
-        imageCard = 'images/heart_nine.jpg';
-        count++;
-        // print(count);
-      } else if (count == 1) {
-        fadeInSeconds = 3;
-        _opacityLevel =! _opacityLevel;
-        imageCard = 'images/spade_ace.jpg';
-        count++;
-        // print(count);
-      } else if (count == 2) {
-        _opacityLevel =! _opacityLevel;
-        fadeInSeconds = 3;
-        // imageCard = 'images/spade_ace.jpg';
-        count = count - 2;
-        // print(count);
+      if (widget.resultImageDisplay == false) {
+        if (count == 0) {
+          _opacityLevel = !_opacityLevel;
+          fadeInSeconds = 1;
+          imageCard = 'images/heart_nine.jpg';
+          count++;
+          // print(count);
+        } else if (count == 1) {
+          fadeInSeconds = 3;
+          _opacityLevel = !_opacityLevel;
+          count++;
+        } else if (count == 2) {
+          _opacityLevel = !_opacityLevel;
+          fadeInSeconds = 3;
+          imageCard = 'images/spade_ace.jpg';
+          count++;
+        } else if (count == 3) {
+          _opacityLevel = !_opacityLevel;
+          fadeInSeconds = 3;
+          count = count - 3;
+        }
       }
     });
   }
